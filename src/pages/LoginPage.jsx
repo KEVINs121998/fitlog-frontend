@@ -9,15 +9,30 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post('http://localhost:5000/auth/login', { email, password });
-      localStorage.setItem('token', `Bearer ${res.data.token}`);
+  e.preventDefault();
+  try {
+    const res = await axios.post('http://localhost:5000/auth/login', {
+      email,
+      password,
+    });
+
+    const token = `Bearer ${res.data.token}`;
+    localStorage.setItem('token', token);
+    localStorage.setItem("role", res.data.role); 
+
+    const decoded = JSON.parse(atob(res.data.token.split('.')[1]));
+    const role = decoded.role;
+
+    if (role === 'trainer') {
+      navigate('/trainer/dashboard');
+    } else {
       navigate('/dashboard');
-    } catch (err) {
-      alert('Login failed');
     }
-  };
+  } catch (err) {
+    alert('Login failed');
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-blue-200">

@@ -20,6 +20,14 @@ const RegisterPage = () => {
       });
 
       localStorage.setItem('token', `Bearer ${res.data.token}`);
+       localStorage.setItem('role', res.data.role); 
+
+          alert('Registered successfully!');
+
+         setName('');
+    setEmail('');
+    setPassword('');
+    setRole('user');
     } catch (err) {
       alert('Registration failed');
     }
